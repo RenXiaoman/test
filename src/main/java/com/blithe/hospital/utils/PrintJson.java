@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 public class PrintJson {
-	
 	//将boolean值解析为json串
 	public static void printJsonFlag(HttpServletResponse response,boolean flag){
 		
