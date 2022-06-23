@@ -11,5 +11,5 @@ import org.apache.ibatis.annotations.Param;
  */
 
 public interface UserDao {
-    User login(@Param("loginAct") String loginAct, @Param("loginPwd") String loginPwd);
+    User login(@Param("loginAct") String loginAct,@Param("loginPwd") String loginPwd);
 }

@@ -67,17 +67,17 @@
       <version>2.13.1</version>
     </dependency>
 
-    <!--<dependency>-->
-    <!--  <groupId>mysql</groupId>-->
-    <!--  <artifactId>mysql-connector-java</artifactId>-->
-    <!--  <version>8.0.25</version>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.25</version>
+    </dependency>
 
     <!--数据库-->
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
-      <version>10.2.1.jre8</version>
+      <version>6.4.0.jre8</version>
       <scope>runtime</scope>
     </dependency>
 
