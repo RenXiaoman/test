@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String loginAct, String loginPwd, String ip) throws LoginException {
         User user = dao.login(loginAct,loginPwd);
+        System.out.println("hahaha");
         if(user == null){
             throw new LoginException("账号密码错误！");
         }

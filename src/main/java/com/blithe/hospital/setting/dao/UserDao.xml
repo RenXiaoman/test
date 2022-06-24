@@ -6,6 +6,6 @@
     <select id="login" resultType="com.blithe.hospital.setting.domain.User">
         select id,loginAct,name,loginPwd,
                lockState,allowIps
-               from crm.tbl_user where loginAct=#{loginAct} and loginPwd=#{loginPwd}
+               from hospital.dbo.Users where loginAct=#{loginAct} and loginPwd=#{loginPwd}
     </select>
 </mapper>

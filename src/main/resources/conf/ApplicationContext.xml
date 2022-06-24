@@ -7,10 +7,19 @@
 
     <context:property-placeholder location="classpath:conf/jdbc.properties"/>
 
-    <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}" />
+    <!--<bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">-->
+    <!--    <property name="driverClassName" value="${jdbc.driver}" />-->
+    <!--    <property name="url" value="${jdbc.url}"/>-->
+    <!--    <property name="username" value="${jdbc.username}"/>-->
+    <!--    <property name="password" value="${jdbc.password}" />-->
+    <!--</bean>-->
+
+    <bean id="dataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
     </bean>
 
     <bean name="sqlSessionFactory"  class="org.mybatis.spring.SqlSessionFactoryBean" >
