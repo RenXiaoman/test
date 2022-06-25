@@ -1,4 +1,4 @@
-<%@ page import="com.blithe.crm.setting.domain.User" %>
+<%@ page import="com.blithe.hospital.setting.domain.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
 String path = request.getContextPath();
@@ -63,9 +63,6 @@ User user = (User) application.getAttribute("user");
 					<div style="position: relative; left: 40px;">
 						姓名：<b>${user.name}</b><br><br>
 						登录帐号：<b>${user.loginAct}</b><br><br>
-						组织机构：<b>${user.deptno}，市场部门</b><br><br>
-						邮箱：<b>${user.email}</b><br><br>
-						失效时间：<b>${user.expireTime}</b><br><br>
 						允许访问IP：<b>${user.allowIps}</b>
 					</div>
 				</div>
@@ -166,12 +163,12 @@ User user = (User) application.getAttribute("user");
 		<div id="navigation" style="left: 0px; width: 18%; position: relative; height: 100%; overflow:auto;">
 		
 			<ul id="no1" class="nav nav-pills nav-stacked">
-				<li class="liClass"><a href="workbench/activity/index.jsp" target="workareaFrame"><span class="glyphicon glyphicon-play-circle"></span> 科室项目管理</a></li>
-				<li class="liClass"><a href="workbench/clue/index.jsp" target="workareaFrame"><span class="glyphicon glyphicon-plus"></span> 科室管理</a></li>
-				<li class="liClass"><a href="workbench/customer/index.jsp" target="workareaFrame"><span class="glyphicon glyphicon-user"></span> 医生管理</a></li>
-				<li class="liClass"><a href="workbench/contacts/index.jsp" target="workareaFrame"><span class="glyphicon glyphicon-tasks"></span> 值班安排</a></li>
+				<li class="liClass"><a href="workbench/techProject/index.jsp" target="workareaFrame"><span class="glyphicon glyphicon-play-circle"></span> 科室项目管理</a></li>
+				<li class="liClass"><a href="workbench/techRoom/index.jsp" target="workareaFrame"><span class="glyphicon glyphicon-plus"></span> 科室管理</a></li>
+				<li class="liClass"><a href="workbench/doctor/index.jsp" target="workareaFrame"><span class="glyphicon glyphicon-user"></span> 医生管理</a></li>
+				<li class="liClass"><a href="workbench/schedule/index.jsp" target="workareaFrame"><span class="glyphicon glyphicon-tasks"></span> 值班安排</a></li>
 			</ul>
-			
+
 			<!-- 分割线 -->
 			<div id="divider1" style="position: absolute; top : 0px; right: 0px; width: 1px; height: 100% ; background-color: #B3B3B3;"></div>
 		</div>

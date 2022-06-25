@@ -45,7 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("#hidden-id").val($xz.val());
 
 				$.ajax({
-					url:"workbench/contacts/getUserListAndContacts.do",
+					url:"workbench/schedule/getUserListAndschedule.do",
 					data:{
 						id:$xz.val()
 					},
@@ -55,8 +55,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						/*
 							result:
 								result:{"user":{"name":"张三","id":"324532bsddfg",...},
-									"userList":["zhangsan":{},"lisi":{},...],"Clue":{"id":"","mphoe","",...}],
-									"contact":{"id":"asdfasasdf235423","owner":"张三",...}
+									"userList":["zhangsan":{},"lisi":{},...],"schedule":{"id":"","mphoe","",...}],
+									"contact":{"id":"asdfasasdf235423","mainClass":"张三",...}
 								}
 						 */
 						let html = "<option selected='selected' value='"+result.user.id+"'>" + result.user.name + "</option>"
@@ -64,23 +64,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							html += "<option value='"+n.id+"'>" + n.name + "</option>"
 						})
 
-						$("#edit-owner").html(html);
+						$("#edit-mainClass").html(html);
 
-						let contacts = result.contacts;
-						$("#edit-fullname").val(contacts.fullname)
-						$("#edit-appellation").val(contacts.appellation)
-						$("#edit-owner").val(contacts.owner)
-						$("#edit-job").val(contacts.job)
-						$("#edit-email").val(contacts.email)
-						$("#edit-mphone").val(contacts.mphone)
-                        $("#edit-birth").val(contacts.birth)
-						$("#edit-source").val(contacts.source)
-                        $("#edit-customerName").val(contacts.customerId)
-						$("#edit-description").val(contacts.description)
-						$("#edit-contactSummary").val(contacts.contactSummary)
-						$("#edit-nextContactTime").val(contacts.nextContactTime)
-						$("#edit-address").val(contacts.address)
-						$("#editContactsModal").modal("show");
+						let schedule = result.schedule;
+						$("#edit-doctor").val(schedule.doctor)
+						$("#edit-appellation").val(schedule.appellation)
+						$("#edit-mainClass").val(schedule.mainClass)
+						$("#edit-job").val(schedule.job)
+						$("#edit-email").val(schedule.email)
+						$("#edit-mphone").val(schedule.mphone)
+                        $("#edit-date").val(schedule.date)
+						$("#edit-source").val(schedule.source)
+                        $("#edit-techRoom").val(schedule.customerId)
+						$("#edit-description").val(schedule.description)
+						$("#edit-scheduleummary").val(schedule.scheduleummary)
+						$("#edit-nextContactTime").val(schedule.nextContactTime)
+						$("#edit-address").val(schedule.address)
+						$("#editScheduleModal").modal("show");
 					}
 				})
 			}
@@ -89,30 +89,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#updateBtn").click(function (){
 			let id = $("#hidden-id").val();
 			$.ajax({
-				url:"workbench/contacts/update.do",
+				url:"workbench/schedule/update.do",
 				data:{
 					"id":id,
-					"fullname":$.trim($("#edit-fullname").val()),
+					"doctor":$.trim($("#edit-doctor").val()),
 					"appellation":$.trim($("#edit-appellation").val()),
-					"owner":$.trim($("#edit-owner").val()),
+					"mainClass":$.trim($("#edit-mainClass").val()),
 					"job":$.trim($("#edit-job").val()),
 					"email":$.trim($("#edit-email").val()),
 					"source":$.trim($("#edit-source").val()),
 					"description":$.trim($("#edit-description").val()),
-					"customerName":$.trim($("#edit-customerName").val()),
-					"contactSummary":$.trim($("#edit-contactSummary").val()),
+					"techRoom":$.trim($("#edit-techRoom").val()),
+					"scheduleummary":$.trim($("#edit-scheduleummary").val()),
 					"nextContactTime":$.trim($("#edit-nextContactTime").val()),
 					"address":$.trim($("#edit-address").val()),
 					"mphone":$.trim($("#edit-mphone").val()),
-					"birth":$.trim($("#edit-birth").val())
+					"date":$.trim($("#edit-date").val())
 				},
 				type:"post",
 				dataType:"json",
 				success:function(result){
 					if(result){
-						pageList($("#contactsPage").bs_pagination('getOption','currentPage'),
-								$("#contactsPage").bs_pagination('getOption','rowsPerPage'));
-						$("#editContactsModal").modal("hide");
+						pageList($("#schedulePage").bs_pagination('getOption','currentPage'),
+								$("#schedulePage").bs_pagination('getOption','rowsPerPage'));
+						$("#editScheduleModal").modal("hide");
 					}else{
 						alert("更新失败!");
 					}
@@ -120,10 +120,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			})
 		})
 
-		$("#create-customerName").typeahead({
+		$("#create-techRoom").typeahead({
 			source: function (query, process) {
 				$.get(
-						"workbench/transaction/getCustomerName.do",
+						"workbench/transaction/gettechRoom.do",
 						{ "name" : query },
 						function (data) {
 							//alert(data);
@@ -134,10 +134,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			},
 			delay: 100
 		});
-		$("#edit-customerName").typeahead({
+		$("#edit-techRoom").typeahead({
 			source: function (query, process) {
 				$.get(
-						"workbench/transaction/getCustomerName.do",
+						"workbench/transaction/gettechRoom.do",
 						{ "name" : query },
 						function (data) {
 							//alert(data);
@@ -155,39 +155,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        e.stopPropagation();
 	    });
 		$("#searchBtn").click(function (){
-			$("#hide-clueSource").val($.trim($("#search-clueSource").val()));
-			$("#hide-owner").val($.trim($("#search-owner").val()));
-			$("#hide-fullname").val($.trim($("#search-fullname").val()));
-			$("#hide-customerName").val($.trim($("#search-customerName").val()));
-			$("#hide-birth").val($.trim($("#search-birth").val()))
+			$("#hide-mainClass").val($.trim($("#search-mainClass").val()));
+			$("#hide-doctor").val($.trim($("#search-doctor").val()));
+			$("#hide-techRoom").val($.trim($("#search-techRoom").val()));
 
-			pageList($("#contactsPage").bs_pagination('getOption','currentPage'),
-					$("#contactsPage").bs_pagination('getOption','rowsPerPage'));
+			pageList($("#schedulePage").bs_pagination('getOption','currentPage'),
+					$("#schedulePage").bs_pagination('getOption','rowsPerPage'));
 		})
 		$("#selectAll").click(function(){
 			$("input[name=xz]").prop("checked",this.checked)
 		})
-		$("#contactsBody").on("click",$("input[name=xz]"),function (){
+		$("#scheduleBody").on("click",$("input[name=xz]"),function (){
 			$("#selectAll").prop("checked",$("input[name=xz]").length==$("input[name=xz]:checked").length)
 		})
-		pageList(1,5);
+		pageList(1,10);
 
 		$("#saveBtn").click(function (){
 			$.ajax({
-				url:"workbench/contacts/save.do",
+				url:"workbench/schedule/save.do",
 				data:{
-					"fullname":$.trim($("#create-fullname").val()),
+					"doctor":$.trim($("#create-doctor").val()),
 					"appellation":$.trim($("#create-appellation").val()),
-					"owner":$.trim($("#create-owner").val()),
+					"mainClass":$.trim($("#create-mainClass").val()),
 					"job":$.trim($("#create-job").val()),
-					"customerName":$.trim($("#create-customerName").val()),
+					"techRoom":$.trim($("#create-techRoom").val()),
 					"email":$.trim($("#create-email").val()),
 					"mphone":$.trim($("#create-mphone").val()),
-					"source":$.trim($("#create-clueSource").val()),
+					"source":$.trim($("#create-subentry").val()),
 					"description":$.trim($("#create-description").val()),
-					"contactSummary":$.trim($("#create-contactSummary").val()),
+					"scheduleummary":$.trim($("#create-scheduleummary").val()),
 					"nextContactTime":$.trim($("#create-nextContactTime").val()),
-					"birth":$.trim($("#create-birth").val()),
+					"date":$.trim($("#create-date").val()),
 					"address":$.trim($("#create-address").val())
 				},
 				type:"post",
@@ -201,12 +199,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 						// 刷新列表
 						pageList(1,
-								$("#contactsPage").bs_pagination('getOption','rowsPerPage'))
+								$("#schedulePage").bs_pagination('getOption','rowsPerPage'))
 						// 刷新保存中的数据
-						$("#contactsForm")[0].reset();
+						$("#scheduleForm")[0].reset();
 
 						// 关闭模态窗口
-						$("#createContactsModal").modal("hide");
+						$("#createscheduleModal").modal("hide");
 					}else{
 						alert("添加线索失败")
 					}
@@ -232,14 +230,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 					// alert(param);
 					$.ajax({
-						url:"workbench/contacts/delete.do",
+						url:"workbench/schedule/delete.do",
 						data:param,
 						type:"post",
 						dataType:"json",
 						success:function(result){
 							if(result){
-								pageList($("#contactsPage").bs_pagination('getOption','currentPage'),
-										$("#contactsPage").bs_pagination('getOption','rowsPerPage'));
+								pageList($("#schedulePage").bs_pagination('getOption','currentPage'),
+										$("#schedulePage").bs_pagination('getOption','rowsPerPage'));
 							}else{
 								alert("删除失败");
 							}
@@ -252,7 +250,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		$("#createBtn").click(function(){
 			$.ajax({
-				url:"workbench/clue/getUserList.do",
+				url:"workbench/schedule/getUserList.do",
 				type:"get",
 				dataType:"json",
 				success:function(data){
@@ -260,13 +258,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					$.each(data,function(i,n){
 						html += "<option value='"+n.id+"'>"+n.name+"</option>"
 					})
-					$("#create-owner").html(html);
+					$("#create-mainClass").html(html);
 
 					let id = "${user.id}";
-					$("#create-owner").val(id);
+					$("#create-mainClass").val(id);
 
 					// 处理完下拉框数据后，打开模态窗口
-					$("#createClueModal").modal("show");
+					$("#createscheduleModal").modal("show");
 				}
 			})
 		})
@@ -276,48 +274,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		$("#selectAll").prop("checked",false);
 
-		$("#search-clueSource").val($.trim($("#hide-clueSource").val()));
-		$("#search-owner").val($.trim($("#hide-owner").val()));
-		$("#search-fullname").val($.trim($("#hide-fullname").val()));
-		$("#search-customerName").val($.trim($("#hide-customerName").val()));
-		$("#search-birth").val($.trim($("#hide-birth").val()))
+		$("#search-mainClass").val($.trim($("#hide-mainClass").val()));
+		$("#search-doctor").val($.trim($("#hide-doctor").val()));
+		$("#search-techRoom").val($.trim($("#hide-techRoom").val()));
 
 		$.ajax({
-			url:"workbench/contacts/pageList.do",
+			url:"workbench/schedule/pageList.do",
 			data:{
 				"pageNo":pageNo,
 				"pageSize":pageSize,
-				"source":$("#search-clueSource").val(),
-				"owner":$("#search-owner").val(),
-				"fullname":$("#search-fullname").val(),
-				"customerName":$("#search-customerName").val(),
-				"birth":$("#search-birth").val()
+				"mainClass":$("#search-mainClass").val(),
+				"doctor":$("#search-doctor").val(),
+				"techRoom":$("#search-techRoom").val(),
 			},
 			type:"get",
 			dataType:"json",
 			success:function(data){
 				/*
 					result:
-					{"total":100,"contactsList":["线索1":{"id":adsfa,...},"线索2":{"":..}]}
+					{"total":100,"scheduleList":["线索1":{"id":adsfa,...},"线索2":{"":..}]}
 					 result.
 				 */
 				let html = "";
 				$.each(data.dataList,function(i,n){
 					html += '<tr class="active">'
 					html += '	<td><input type="checkbox" name="xz" value="'+n.id+'"/></td>'
-					html += '	<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/contacts/detail.do?id='+n.id+'\';">'+n.fullname+'</a></td>'
-					html += '	<td>'+n.customerId+'</td>'
-					html += '	<td>'+n.owner+'</td>'
-					html += '	<td>'+n.source+'</td>'
-					html += '	<td>'+n.birth+'</td>'
+					html += '	<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/schedule/detail.do?id='+n.id+'\';">'+n.doctorName+'</a></td>'
+					html += '	<td>'+n.docGrade+'</td>'
+					html += '	<td>'+n.techOfficeName+'</td>'
+					html += '	<td>'+n.dutyType+'</td>'
+					html += '   <td>'+n.dutyDate+'</td>'
+					html += '	<td>'+n.dutyTimeStage+'</td>'
 					html += '</tr>'
 				})
 
-				$("#contactsBody").html(html);
+				$("#scheduleBody").html(html);
 
 				let totalPages = data.total%pageSize==0?data.total/pageSize:parseInt(data.total/pageSize)+1
 
-				$("#contactsPage").bs_pagination({
+				$("#schedulePage").bs_pagination({
 					currentPage: pageNo,
 					rowsPerPage: pageSize,
 					maxRowsPerPage: 20,
@@ -342,34 +337,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </script>
 </head>
 <body>
-<input type="hidden" id="hide-clueSource">
-<input type="hidden" id="hide-owner">
-<input type="hidden" id="hide-fullname">
-<input type="hidden" id="hide-customerName">
-<input type="hidden" id="hide-birth">
+<input type="hidden" id="hide-mainClass">
+<input type="hidden" id="hide-doctor">
+<input type="hidden" id="hide-techRoom">
 
-	<!-- 创建联系人的模态窗口 -->
-	<div class="modal fade" id="createClueModal" role="dialog">
+	<!-- 创建排班的模态窗口 -->
+	<div class="modal fade" id="createscheduleModal" role="dialog">
 		<div class="modal-dialog" role="document" style="width: 85%;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" onclick="$('#createClueModal').modal('hide');">
+					<button type="button" class="close" onclick="$('#createscheduleModal').modal('hide');">
 						<span aria-hidden="true">×</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabelx">创建联系人</h4>
+					<h4 class="modal-title" id="myModalLabelx">创建排班</h4>
 				</div>
 				<div class="modal-body">
-					<form class="form-horizontal" id="contactsForm" role="form">
+					<form class="form-horizontal" id="scheduleForm" role="form">
 					
 						<div class="form-group">
-							<label for="create-owner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="create-mainClass" class="col-sm-2 control-label">大项名称<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-owner">
+								<select class="form-control" id="create-mainClass">
 								</select>
 							</div>
-							<label for="create-clueSource" class="col-sm-2 control-label">来源</label>
+							<label for="create-subentry" class="col-sm-2 control-label">分项名称</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-clueSource">
+								<select class="form-control" id="create-subentry">
 								  <option></option>
 									<c:forEach items="${source}" var="s">
 										<option value="${s.value}">${s.text}</option>
@@ -379,9 +372,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						
 						<div class="form-group">
-							<label for="create-fullname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="create-doctor" class="col-sm-2 control-label">医生姓名<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-fullname">
+								<input type="text" class="form-control" id="create-doctor">
 							</div>
 							<label for="create-appellation" class="col-sm-2 control-label">称呼</label>
 							<div class="col-sm-10" style="width: 300px;">
@@ -409,16 +402,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="col-sm-10" style="width: 300px;">
 								<input type="text" class="form-control" id="create-email">
 							</div>
-							<label for="create-birth" class="col-sm-2 control-label">生日</label>
+							<label for="create-date" class="col-sm-2 control-label">值班日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control time" id="create-birth">
+								<input type="text" class="form-control time" id="create-date">
 							</div>
 						</div>
 						
 						<div class="form-group" style="position: relative;">
-							<label for="create-customerName" class="col-sm-2 control-label">客户名称</label>
+							<label for="create-techRoom" class="col-sm-2 control-label">诊室名称</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-customerName" placeholder="支持自动补全，输入客户不存在则新建">
+								<input type="text" class="form-control" id="create-techRoom" placeholder="支持自动补全，输入客户不存在则新建">
 							</div>
 						</div>
 						
@@ -433,9 +426,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 						<div style="position: relative;top: 15px;">
 							<div class="form-group">
-								<label for="create-contactSummary" class="col-sm-2 control-label">联系纪要</label>
+								<label for="create-scheduleummary" class="col-sm-2 control-label">联系纪要</label>
 								<div class="col-sm-10" style="width: 81%;">
-									<textarea class="form-control" rows="3" id="create-contactSummary"></textarea>
+									<textarea class="form-control" rows="3" id="create-scheduleummary"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
@@ -467,27 +460,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</div>
 	
-	<!-- 修改联系人的模态窗口 -->
+	<!-- 修改排班的模态窗口 -->
     <input type="hidden" id="hidden-id">
-	<div class="modal fade" id="editContactsModal" role="dialog">
+	<div class="modal fade" id="editScheduleModal" role="dialog">
 		<div class="modal-dialog" role="document" style="width: 85%;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">×</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel1">修改联系人</h4>
+					<h4 class="modal-title" id="myModalLabel1">修改排班</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form">
 					
 						<div class="form-group">
-							<label for="edit-owner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="edit-mainClass" class="col-sm-2 control-label">大项名称<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="edit-owner">
+								<select class="form-control" id="edit-mainClass">
 								</select>
 							</div>
-							<label for="edit-source" class="col-sm-2 control-label">来源</label>
+							<label for="edit-source" class="col-sm-2 control-label">分项名称</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-source">
                                     <c:forEach items="${source}" var="s">
@@ -498,9 +491,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						
 						<div class="form-group">
-							<label for="edit-fullname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="edit-doctor" class="col-sm-2 control-label">医生姓名<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="edit-fullname" value="李四">
+								<input type="text" class="form-control" id="edit-doctor" value="李四">
 							</div>
 							<label for="edit-appellation" class="col-sm-2 control-label">称呼</label>
 							<div class="col-sm-10" style="width: 300px;">
@@ -528,16 +521,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="col-sm-10" style="width: 300px;">
 								<input type="text" class="form-control" id="edit-email" value="lisi@bjpowernode.com">
 							</div>
-							<label for="edit-birth" class="col-sm-2 control-label">生日</label>
+							<label for="edit-date" class="col-sm-2 control-label">值班日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control time" id="edit-birth">
+								<input type="text" class="form-control time" id="edit-date">
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="edit-customerName" class="col-sm-2 control-label">客户名称</label>
+							<label for="edit-techRoom" class="col-sm-2 control-label">诊室名称</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="edit-customerName" placeholder="支持自动补全，输入客户不存在则新建" value="动力节点">
+								<input type="text" class="form-control" id="edit-techRoom" placeholder="支持自动补全，输入客户不存在则新建" value="动力节点">
 							</div>
 						</div>
 						
@@ -552,9 +545,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 						<div style="position: relative;top: 15px;">
 							<div class="form-group">
-								<label for="edit-contactSummary" class="col-sm-2 control-label">联系纪要</label>
+								<label for="edit-scheduleummary" class="col-sm-2 control-label">联系纪要</label>
 								<div class="col-sm-10" style="width: 81%;">
-									<textarea class="form-control" rows="3" id="edit-contactSummary"></textarea>
+									<textarea class="form-control" rows="3" id="edit-scheduleummary"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
@@ -589,7 +582,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div>
 		<div style="position: relative; left: 10px; top: -10px;">
 			<div class="page-header">
-				<h3>联系人列表</h3>
+				<h3>排班列表</h3>
 			</div>
 		</div>
 	</div>
@@ -603,48 +596,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  
 				  <div class="form-group">
 				    <div class="input-group">
-				      <div class="input-group-addon">所有者</div>
-				      <input class="form-control" id="search-owner" type="text">
+				      <div class="input-group-addon">大项名称</div>
+						<input class="form-control" id="search-mainClass" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
-				      <div class="input-group-addon">姓名</div>
-				      <input class="form-control" id="search-fullname" type="text">
+				      <div class="input-group-addon">医生姓名</div>
+						  <input class="form-control" id="search-doctor" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
-				      <div class="input-group-addon">客户名称</div>
-				      <input class="form-control" id="search-customerName" type="text">
+				      <div class="input-group-addon">诊室名称</div>
+						<input class="form-control" id="search-techRoom" type="text">
 				    </div>
+					  <button type="button" id="searchBtn" class="btn btn-default">查询</button>
 				  </div>
-				  
 				  <br>
-				  
-				  <div class="form-group">
-				    <div class="input-group">
-				      <div class="input-group-addon">来源</div>
-				      <select class="form-control" id="search-clueSource">
-						  <option></option>
-						  <c:forEach items="${source}" var="s">
-							  <option value="${s.value}">${s.text}</option>
-						  </c:forEach>
-						</select>
-				    </div>
-				  </div>
-				  
-				  <div class="form-group">
-				    <div class="input-group">
-				      <div class="input-group-addon">生日</div>
-				      <input class="form-control time" id="search-birth" type="text">
-				    </div>
-				  </div>
-				  
-				  <button type="button" id="searchBtn" class="btn btn-default">查询</button>
-				  
 				</form>
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 10px;">
@@ -661,20 +632,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<thead>
 						<tr style="color: #B3B3B3;">
 							<td><input type="checkbox" id="selectAll"/></td>
-							<td>姓名</td>
-							<td>客户名称</td>
-							<td>所有者</td>
-							<td>来源</td>
-							<td>生日</td>
+							<td>医生姓名</td>
+							<td>医生级别</td>
+							<td>医生房间</td>
+							<td>值班类型</td>
+							<td>值班日期</td>
+							<td>值班时段</td>
 						</tr>
 					</thead>
-					<tbody id="contactsBody">
+					<tbody id="scheduleBody">
 					</tbody>
 				</table>
 			</div>
 			
 			<div style="height: 50px; position: relative;top: 10px;">
-				<div id="contactsPage"></div>
+				<div id="schedulePage"></div>
 			</div>
 			
 		</div>

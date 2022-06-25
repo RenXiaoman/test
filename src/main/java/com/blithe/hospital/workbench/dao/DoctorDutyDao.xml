@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blithe.hospital.workbench.dao.DoctorDutyDao">
+    <select id="getTotal" resultType="int">
+        select count(DoctorName) from DoctorDuty
+        <where>
+            <if test="DoctorName!=null and DoctorName!=''">
+                DoctorName like '%' #{DoctorName} '%'
+            </if>
+
+            <if test="TechOfficeName!=null and TechOfficeName!=''">
+                and TechOfficeName like '%' #{TechOfficeName} '%'
+            </if>
+            <if test="MainClassName!=null and MainClassName!=''">
+                and MainClassName like '%' #{MainClassName} '%'
+            </if>
+        </where>
+    </select>
+    
+    <select id="getDutyListByCondition" resultType="com.blithe.hospital.workbench.domain.DoctorDuty">
+        select DutyNo, TechOfficeCode, TechOfficeName, MainClassCode, MainClassName, PDetailCode, PDetailName,
+               DoctorCode, DoctorName, DoctorSex, DocGrade, DutyRole, DutyType, DutyWeekDay, DutyDay, DutyDate,
+               MaxReg, RegPrice, DutyTimeStage, DelayFlag, Remark from DoctorDuty
+        <where>
+            <if test="DoctorName!=null and DoctorName!=''">
+                DoctorName like '%' #{DoctorName} '%'
+            </if>
+
+            <if test="TechOfficeName!=null and TechOfficeName!=''">
+                and TechOfficeName like '%' #{TechOfficeName} '%'
+            </if>
+            <if test="MainClassName!=null and MainClassName!=''">
+                and MainClassName like '%' #{MainClassName} '%'
+            </if>
+        </where>
+    </select>
+</mapper>

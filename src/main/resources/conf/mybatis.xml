@@ -14,7 +14,10 @@
         <package name="com.blithe.hospital.domain"/>
         <package name="com.blithe.hospital.setting.domain" />
     </typeAliases>
-    
+
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
 
     <!--sql mapper(sql映射文件的)的位置-->
     <mappers>
